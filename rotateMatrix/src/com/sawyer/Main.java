@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Main {
 
+    //TO-DO: add input validations.
     public static void main(String[] args) {
 	// just to test it works
         List <int[]> matrix5 = fiveByFiveMatrix();
@@ -27,6 +28,29 @@ public class Main {
         }
     }
 
+    // depth == 0 when rotating the outer perimeter, then 1 when moving in one row, then 2... ex for this matrix
+    // Length = the largest index of a row that we are currently working with.
+    // 1  2  3  4  5
+    // 6  7  8  9 10
+    // 11 12 13 14 15
+    // 16 17 18 19 20
+    // 21 22 23 24 25
+    //
+    // depth = 0
+    // matrixLength = 5-1 = 4 (ints are in indexes depth to matrix length, or 0 to 4)
+    // 1  2  3  4  5
+    // 6           10
+    // 11          15
+    // 16          20
+    // 21 22 23 24 25
+    //
+    // depth = 1
+    // matrixLength = 5 - 1 - 1 = 3 (ints are in indexes depth to matrix length, or 1 to 3)
+    //  7  8  9
+    //  12    14
+    //  17 18 19
+    //
+
     public static void rotateMatrixCC(List<int[]> matrix){
         int depth = 0;
         while ( depth < matrix.size()/2){
@@ -37,20 +61,21 @@ public class Main {
         printMatrix(matrix);
     }
 
-
     public static void rotateMatrixCC(List<int[]> matrix, int depth){
         int i = depth;
-        int L = matrix.size() -1 -depth;
-        while (i < L){
+        int matrixLength = matrix.size() - 1 -depth;
+
+        while (i < matrixLength){
             int temp = matrix.get(depth)[i];
-            matrix.get(depth)[i] = matrix.get(i)[L];
-            matrix.get(i)[L] = matrix.get(L)[L-i + depth];
-            matrix.get(L)[L-i + depth] = matrix.get(L-i+depth)[depth];
-            matrix.get(L-i+depth)[depth] = temp;
+            matrix.get(depth)[i] = matrix.get(i)[matrixLength];
+            matrix.get(i)[matrixLength] = matrix.get(matrixLength)[matrixLength-i + depth];
+            matrix.get(matrixLength)[matrixLength-i + depth] = matrix.get(matrixLength-i+depth)[depth];
+            matrix.get(matrixLength-i+depth)[depth] = temp;
             i ++;
         }
     }
 
+    //really inefficeint way to make a matrix:
     public static  List <int[]> fiveByFiveMatrix(){
         List <int[]> matrix = new ArrayList();
         int[] row1 = new int[5];
